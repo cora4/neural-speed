@@ -1,6 +1,6 @@
 
 ## Before you start
-ITREX LLM C++ Runtime (`Neural Speed`) has already supported some popular models like `LLAMA`,`GPT-J`, `GPT-NEOX`, `DOLLY`, etc.These LLMs have similar architectures and some of them share the same architect (`DOLLY` and `GPT-NEOX`). Before adding a new model, you can checkout its architecture (from Huggingface `config.json`) whether is in our [supported list](./neural_speed/models/model_utils/model_types.h#L68).
+ITREX LLM C++ Runtime (`Neural Speed`) has already supported some popular models like `LLAMA`,`GPT-J`, `GPT-NEOX`, `DOLLY`, etc.These LLMs have similar architectures and some of them share the same architect (`DOLLY` and `GPT-NEOX`). Before adding a new model, you can checkout its architecture (from Huggingface `config.json`) whether is in our [supported list](neural_speed/models/model_utils/model_types.h#L68).
 
 However, LLM inference thing is complicated. It may have its own: 1. special tokenizer (or vocab); 2. architecture (or forward pipeline); 3. operators (or kernels). Generally speaking, the first and second points appear frequently for transformers-LLMs. I will show you how to run a new model as soon as possible when your model hasn't any problems like above or only the problem 1. The next sections will discuss about the problem 2 and the problem 3 is beyond the scope of this document.
 
@@ -229,7 +229,7 @@ When enabling a new model, we should implement the `new_model.cpp` of the new mo
 
 Most of our model examples only support single prompt processing. You need to add `batch-dim` for tensors and concat `KV cache` per-batch if you want to try multi-batch inference.
 
-We recommend to use continuous batching way since it has no padding effect and can boost throughput in both offline and server scenarios. Here is an [example](https://github.com/intel/neural-speed/pull/145/files) of how to modify `LLAMA` [source cpp file](neural_speed/models/llama/llama.cpp). We will show the important modifications below.
+We recommend to use continuous batching way since it has no padding effect and can boost throughput in both offline and server scenarios. Here is an [example](neural-speed/pull/145/files) of how to modify `LLAMA` [source cpp file](neural_speed/models/llama/llama.cpp). We will show the important modifications below.
 
 ```diff
 // do not forget to copy all sequences in and out
@@ -427,7 +427,7 @@ add_subdirectory(baichuan)
 ## 2.4. Python API
 
 We support binding Neural Speed to transformer-based Python API, which is more convenient for customers to use. You need to modify the following files.
-Please refer to [install-from-source](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/installation.md#install-from-source) and [how-to-use-transformer-based-api](neural_speed/README.md#how-to-use-transformer-based-api)  of using Python API.
+Please refer to [install-from-source](https://github.com/cora4/intel-extension-for-transformers/blob/main/docs/installation.md#install-from-source) and [how-to-use-transformer-based-api](neural_speed/README.md#how-to-use-transformer-based-api)  of using Python API.
 
 > The Python API will automatically call the convert script and quantization script to convert the hugging face model into a quantified model. Please ensure that the scripts have been added.
 
@@ -516,10 +516,10 @@ python scripts/convert_new_model.py --outtype f32 --outfile ne-f32.bin new_model
 # optimized INT4 model with group size 128 (recommended)
 ./build/bin/quant_new_model --model_file ne-f32.bin --out_file ne-q4_j.bin --weight_dtype int4 --group_size 128 --compute_dtype int8
 ```
-Then you can use the model to inference according to the process in the [README](https://github.com/intel/intel-extension-for-transformers/tree/main/neural_speed).
+Then you can use the model to inference according to the process in the [README](neural_speed).
 ## 4.2.	MHA fusion
 We can improve the performance by fusion the multihead attention process.
-- [MHA-Fusion Introduction](neural_speed/fused_attention.md)
+- [MHA-Fusion Introduction](neural_speed/docs/fused_attention.md)
 - [MHA-Fusion example](https://github.com/intel/intel-extension-for-transformers/pull/567)
 ## 4.3.	FFN fusion
 We can improve the performance by fusion the FFN process.
