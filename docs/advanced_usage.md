@@ -69,7 +69,7 @@ Argument description of quantize.py ([supported MatMul combinations](#supported-
 
 #### Supported Matrix Multiplication Data Types Combinations
 
-Our Neural Speed supports  INT4 / INT3 / INT2 / INT5 / INT6 / INT7 / INT1 / INT8 / FP8 (E4M3, E5M2) / FP4 (E2M1) / NF4 weight-only quantization and FP32 / FP16 / BF16 / INT8 computation forward matmul on the Intel platforms. Here are the all supported data types combinations for matmul operations (quantization and forward).
+Our Neural Speed supports  INT4 / INT3 / INT2 / INT5 / INT6 / INT7 / INT1 / INT8 / FP8 (E4M3, E5M2) / FP4 (E2M1) / NF4 weight-only quantization and FP32 / FP16 / BF16 / INT8 computation forward matmul on the  platforms. Here are the all supported data types combinations for matmul operations (quantization and forward).
 > This table will be updated frequently due to active development. For details you can refer to [BesTLA](../bestla#weight-only)
 
 | Weight dtype | Compute dtype (default value) | Scale dtype (default value) | Quantization scheme (default value) |
@@ -91,11 +91,11 @@ Our Neural Speed supports  INT4 / INT3 / INT2 / INT5 / INT6 / INT7 / INT1 / INT8
 ### 2. Inference
 
 ```bash
-# recommend to use numactl to bind cores in Intel cpus for better performance
+# recommend to use numactl to bind cores in cpus for better performance
 # if you use different core numbers, please also  change -t arg value
 # please type prompt about codes when run `StarCoder`, for example, -p "def fibonnaci(".
 
-#Linux and WSL
+#Linux
 numactl -m 0 -C 0-<physic_cores-1> python scripts/inference.py --model_name llama -m ne-q4_j.bin -c 512 -b 1024 -n 256 -t <physic_cores> --color -p "She opened the door and see"
 
 # if you want to generate fixed outputs, please set --seed arg, for example:
@@ -106,7 +106,7 @@ numactl -m 0 -C 0-<physic_cores-1> python scripts/inference.py --model_name llam
 
 #Windows
 #Recommend to build and run our project in WSL to get a better and stable performance
-python scripts/inference.py --model_name llama -m ne-q4_j.bin -c 512 -b 1024 -n 256 -t <physic_cores|P-cores> --color -p "She opened the door and see"
+python scripts/inference.py --model_name llama -m ne-q4_j.bin -c 512 -b 1024 -n 256 -t <physic_cores|P-cores> --color -p "She opened the door and saw"
 ```
 
 Argument description of inference.py:
