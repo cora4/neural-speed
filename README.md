@@ -1,6 +1,6 @@
 # Neural Speed
 
-Neural Speed is an innovative library designed to support the efficient inference of large language models (LLMs) on Intel platforms through the state-of-the-art (SOTA) low-bit quantization powered by [Intel Neural Compressor](https://github.com/intel/neural-compressor). The work is inspired by [llama.cpp](https://github.com/ggerganov/llama.cpp) and further optimized for Intel platforms with our innovations in [NeurIPS' 2023](https://arxiv.org/abs/2311.00502)
+Neural Speed is an innovative library designed to support the efficient inference of large language models (LLMs) through the state-of-the-art (SOTA) low-bit quantization powered by [Neural Compressor](https://github.com/intel/neural-compressor). The work is optimized with our innovations in [NeurIPS' 2023](https://arxiv.org/abs/2311.00502)
 
 ## Key Features
 - Highly optimized kernels on CPUs with ISAs (AMX, VNNI, AVX512F, AVX_VNNI and AVX2) for N-bit weight (int1, int2, int3, int4, int5, int6, int7 and int8). See [details](neural_speed/core/README.md)
@@ -12,14 +12,12 @@ Neural Speed is an innovative library designed to support the efficient inferenc
 ## Supported Hardware
 | Hardware | Supported |
 |-------------|:-------------:|
-|Intel Xeon Scalable Processors | ✔ |
-|Intel Xeon CPU Max Series | ✔ |
-|Intel Core Processors | ✔ |
+| x86-64 | ✔ |
 
 ## Supported Models
-Support almost all the LLMs in PyTorch format from Hugging Face such as Llama2, ChatGLM2, Baichuan2, Qwen, Mistral, Whisper, etc. File an [issue](https://github.com/intel/neural-speed/issues) if your favorite LLM does not work.
+Support some the LLMs in PyTorch format such as Llama2, ChatGLM2, Baichuan2, Qwen, Mistral, Whisper, etc.
 
-Support typical LLMs in GGUF format such as Llama2, Falcon, MPT, Bloom etc. More are coming. Check out the [details](./docs/supported_models.md).
+Support typical LLMs in GGUF format such as Llama2, Falcon, MPT, Bloom etc. More are coming. Read the [details](./docs/supported_models.md).
 
 ## Installation
 
@@ -39,7 +37,7 @@ pip install .
 
 ## Quick Start (Transformer-like usage)
 
-Install [Intel Extension for Transformers](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/installation.md) to use Transformer-like APIs.
+Install [Intel Extension for Transformers](https://github.com/cora4/intel-extension-for-transformers/blob/master/docs/installation.md) to use Transformer-like APIs.
 
 
 ### PyTorch Model from Hugging Face
@@ -48,7 +46,7 @@ Install [Intel Extension for Transformers](https://github.com/intel/intel-extens
 from transformers import AutoTokenizer, TextStreamer
 from intel_extension_for_transformers.transformers import AutoModelForCausalLM
 model_name = "Intel/neural-chat-7b-v3-1"     # Hugging Face model_id or local model
-prompt = "Once upon a time, there existed a little girl,"
+prompt = "Once upon a time, there was once a little cat,"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
@@ -94,9 +92,9 @@ outputs = model.generate(inputs, streamer=streamer, max_new_tokens=300)
 ```
 
 ### As an Inference Backend in Neural Chat Server
-`Neural Speed` can be used in [Neural Chat Server](https://github.com/intel/intel-extension-for-transformers/tree/main/intel_extension_for_transformers/neural_chat/server) of `Intel Extension for Transformers`. You can choose to enable it by adding `use_neural_speed: true` in `config.yaml`.
+`Neural Speed` can be used in [Neural Chat Server](https://github.com/cora4/intel-extension-for-transformers/tree/master/intel_extension_for_transformers/neural_chat/server) of `Intel Extension for Transformers`. You can choose to enable it by adding `use_neural_speed: true` in `config.yaml`.
 
-- add `optimization` key section to use `Neural Speed` and its RTN quantization ([example](https://github.com/intel/intel-extension-for-transformers/blob/main/intel_extension_for_transformers/neural_chat/examples/deployment/codegen/backend/pc/woq/codegen.yaml)).
+- add `optimization` key section to use `Neural Speed` and its RTN quantization ([example](https://github.com/cora4/intel-extension-for-transformers/blob/master/intel_extension_for_transformers/neural_chat/examples/deployment/codegen/backend/pc/woq/codegen.yaml)).
 ```yaml
 device: "cpu"
 
@@ -107,7 +105,7 @@ optimization:
     compute_dtype: "fp32"
     weight_dtype: "int4"
 ```
-- add key `use_neural_speed` and key `use_gptq` to use `Neural Speed` and load `GPT-Q` model ([example](https://github.com/intel/intel-extension-for-transformers/blob/main/intel_extension_for_transformers/neural_chat/examples/deployment/codegen/backend/pc/gptq/codegen.yaml)).
+- add key `use_neural_speed` and key `use_gptq` to use `Neural Speed` and load `GPT-Q` model ([example](https://github.com/cora4/intel-extension-for-transformers/blob/master/intel_extension_for_transformers/neural_chat/examples/deployment/codegen/backend/pc/gptq/codegen.yaml)).
 
 ```yaml
 device: "cpu"
@@ -115,7 +113,7 @@ use_neural_speed: true
 use_gptq: true
 ```
 
-More details please refer to [Neural Chat](https://github.com/intel/intel-extension-for-transformers/tree/main/intel_extension_for_transformers/neural_chat).
+More details please refer to [Neural Chat](https://github.com/cora4/intel-extension-for-transformers/tree/master/intel_extension_for_transformers/neural_chat).
 
 
 ## Quick Start (llama.cpp-like usage)
@@ -143,7 +141,7 @@ python scripts/quantize.py  --model_name gptj --model_file ne-f32.bin  --out_fil
 #### Inference
 
 ```bash
-# Linux and WSL
+# Linux
 OMP_NUM_THREADS=<physic_cores> numactl -m 0 -C 0-<physic_cores-1> python scripts/inference.py --model_name llama -m ne-q4_j.bin -c 512 -b 1024 -n 256 -t <physic_cores> --color -p "She opened the door and see"
 ```
 
