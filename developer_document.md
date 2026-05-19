@@ -229,7 +229,7 @@ When enabling a new model, we should implement the `new_model.cpp` of the new mo
 
 Most of our model examples only support single prompt processing. You need to add `batch-dim` for tensors and concat `KV cache` per-batch if you want to try multi-batch inference.
 
-We recommend to use continuous batching way since it has no padding effect and can boost throughput in both offline and server scenarios. Here is an [example](neural-speed/pull/145/files) of how to modify `LLAMA` [source cpp file](neural_speed/models/llama/llama.cpp). We will show the important modifications below.
+We recommend to use continuous batching way since it has no padding effect and can boost throughput in both offline and server scenarios. Here is an [example](https:github.com/intel/neural-speed/pull/145/files) of how to modify `LLAMA` [source cpp file](neural_speed/models/llama/llama.cpp). We will show the important modifications below.
 
 ```diff
 // do not forget to copy all sequences in and out
@@ -519,7 +519,7 @@ python scripts/convert_new_model.py --outtype f32 --outfile ne-f32.bin new_model
 Then you can use the model to inference according to the process in the [README](neural_speed).
 ## 4.2.	MHA fusion
 We can improve the performance by fusion the multihead attention process.
-- [MHA-Fusion Introduction](neural_speed/docs/fused_attention.md)
+- [MHA-Fusion Introduction](docs/fused_attention.md)
 - [MHA-Fusion example](https://github.com/intel/intel-extension-for-transformers/pull/567)
 ## 4.3.	FFN fusion
 We can improve the performance by fusion the FFN process.
