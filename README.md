@@ -5,7 +5,7 @@ Neural Speed is an innovative library designed to support the efficient inferenc
 ## Key Features
 - Highly optimized kernels on CPUs with ISAs (AMX, VNNI, AVX512F, AVX_VNNI and AVX2) for N-bit weight (int1, int2, int3, int4, int5, int6, int7 and int8). See [details](neural_speed/core/README.md)
 - Up to 40x performance speedup on popular LLMs compared with llama.cpp. See [details](https://medium.com/@NeuralCompressor/llm-performance-of-intel-extension-for-transformers-f7d061556176) 
-- Tensor parallelism across sockets/nodes on CPUs. See [details](./docs/tensor_parallelism.md)
+- Tensor parallelism across sockets/nodes on CPUs. See [details](docs/tensor_parallelism.md)
 
 > Neural Speed is under active development so APIs are subject to change.
 
@@ -17,7 +17,7 @@ Neural Speed is an innovative library designed to support the efficient inferenc
 ## Supported Models
 Support some the LLMs in PyTorch format such as Llama2, ChatGLM2, Baichuan2, Qwen, Mistral, Whisper, etc.
 
-Support typical LLMs in GGUF format such as Llama2, Falcon, MPT, Bloom etc. More are coming. Read the [details](./docs/supported_models.md).
+Support typical LLMs in GGUF format such as Llama2, Falcon, MPT, Bloom etc. More are coming. Read the [details](docs/supported_models.md).
 
 ## Installation
 
@@ -150,12 +150,12 @@ OMP_NUM_THREADS=<physic_cores> numactl -m 0 -C 0-<physic_cores-1> python scripts
 python scripts/inference.py --model_name llama -m ne-q4_j.bin -c 512 -b 1024 -n 256 -t <physic_cores|P-cores> --color -p "She opened the door and see"
 ```
 
-> Please refer to [Advanced Usage](./docs/advanced_usage.md) for more details.
+> Please refer to [Advanced Usage](docs/advanced_usage.md) for more details.
 
 ## Advanced Topics
 
 ### New model enabling
-You can consider adding your own models, please follow the document: [graph developer document](./developer_document.md).
+You can consider adding your own models, please follow the document: [graph developer document](developer_document.md).
 
 ### Performance profiling
 Enable `NEURAL_SPEED_VERBOSE` environment variable for performance profiling.
